@@ -8,23 +8,24 @@ const userSchema = new Schema(
             type: String,
             unique: true,
             required: true,
-            trim: true
+            trim: true,
         },
         email: {
             type: String,
             required: true,
             unique: true,
-            validate: [ validator.isEmail, 'invalid email' ]
+            validate: [ validator.isEmail, 'Invalid email format.' ],
         },
-        // thoughts: {
-        // TODO: Should be an array of _id values referencing the Thought model
-        // },
-        // friends: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'user',
-        //     }
-        // ]
+        thoughts: [{
+                type: Schema.Types.ObjectId,
+                ref: 'thought',
+        }],
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'user',
+            }
+        ],
     },
     {
         toJSON: {
@@ -34,13 +35,13 @@ const userSchema = new Schema(
     }
 );
 
-// userSchema
-//     .virtual('friendCount')
-//     .get(function () {
-//         return this.friends.length;
-//     });
+userSchema
+    .virtual('friendCount')
+    .get(function () {
+        return this.friends.length;
+    });
 
-// Initialize our User model
+// Initialize the User model based on the userSchema
 const User = model('user', userSchema);
 
 module.exports = User;
