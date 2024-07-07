@@ -1,7 +1,10 @@
+// Import the Thought and User models
 const { Thought, User } = require('../models');
 
+// Export the following functions to be used in the routes folder
 module.exports = {
-    // Get all thoughts
+
+    // Get all thoughts using Thought.find() and display JSON thought data.
     async getThoughts(req, res) {
         try {
             const thoughts = await Thought.find();
@@ -10,7 +13,8 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    // Get a single thought
+
+    // Get a single thought using Thought.findOne() and display the JSON thought data.
     async getSingleThought(req, res) {
         try {
             const thought = await Thought.findOne({ _id: req.params.thoughtId });
@@ -24,7 +28,8 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    // Create a new thought
+
+    // Create a thought using Thought.create and display the new JSON thought data.
     async createThought(req, res) {
         try {
             const thought = await Thought.create(req.body);
@@ -46,7 +51,8 @@ module.exports = {
             res.status(500).json(err)
         }
     },
-    // Update a thought
+    
+    // Update a thought using Thought.findOneAndUpdate and display the updated JSON thought data.
     async updateThought(req, res) {
         try {
             const updatedThought = await Thought.findOneAndUpdate({ _id: req.params.thoughtId },
@@ -62,7 +68,8 @@ module.exports = {
             res.status(500).json({ message: 'something went wrong' });
         }
     },
-    // Delete a thought
+
+    // Delete a thought using Thought.findOneAndDelete and display a JSON message to indicate this.
     async deleteThought(req, res) {
         try {
             const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
@@ -71,24 +78,14 @@ module.exports = {
                 return res.status(404).json({ message: 'No thought with this id!' });
             }
 
-            // const user = await User.findOneAndUpdate(
-            //     { thoughts: req.params.thoughtId },
-            //     { $pull: { thoughts: req.params.thoughtId } },
-            //     { new: true }
-            // );
-
-            // if (!user) {
-            //     return res.status(404).json({
-            //         message: 'Thought deleted but no user with this id!',
-            //     });
-            // }
-
             res.json({ message: 'Thought successfully deleted!' });
         } catch (err) {
             res.status(500).json(err);
         }
     },
-    // Add a reaction to a thought
+
+    // Add a reaction to a thought using Thought.findOneAndUpdate and the $addToSet MongoDB operator
+    // then display the updated JSON thought data.
     async addReaction(req, res) {
         try {
             const thought = await Thought.findOneAndUpdate(
@@ -101,7 +98,8 @@ module.exports = {
                 return res.status(404).json({ message: 'No thought with this id!' });
             }
 
-            // Fetch the updated thought after adding the reaction
+            // Here we fetch the updated thought using the await keyword in our asynchronous function
+            // so we can display the updated JSON thought data.
             const updatedThought = await Thought.findById(req.params.thoughtId);
             res.status(200).json(updatedThought);
 
@@ -109,7 +107,9 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    // Delete a reaction from a thought
+
+    // Delete a reaction to a thought using Thought.findOneAndUpdate and the $pull MongoDB operator
+    // then display the updated JSON thought data.
     async deleteReaction(req, res) {
         try {
             const thought = await Thought.findOneAndUpdate(
@@ -122,7 +122,6 @@ module.exports = {
                 return res.status(404).json({ message: 'No thought with this id!' });
             }
 
-            // Fetch the updated thought after removing the reaction
             const updatedThought = await Thought.findById(req.params.thoughtId);
             res.status(200).json(updatedThought);
 

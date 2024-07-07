@@ -1,4 +1,7 @@
+// Import the router function provided by Express.js
 const router = require('express').Router();
+
+// Import the user CRUD functions in the controllers folder.  
 const {
     createUser,
     getUsers,

@@ -1,6 +1,10 @@
+// Import our connection file to connect to our mongoose server.
 const connection = require('../config/connection');
-const { User, Thought } = require('../models');
 
+// Import the user model so we can seed some dummy data further down.
+const { User } = require('../models');
+
+// Error handling
 connection.on('error', (err) => err);
 
 // Creates a connection to mongodb
@@ -18,7 +22,7 @@ connection.once('open', async () => {
     }
 
 
-    // Create some user data to seed into the database
+    // Create some user data to seed into the database 
     const users = [
         {
             username: "isaac",
@@ -32,6 +36,7 @@ connection.once('open', async () => {
 
     await User.insertMany(users);
 
+    // Display our seeded data and let us know when the seeding is complete. Then exit the process. 
     console.table(users);
     console.timeEnd('seeding complete 🌱');
     process.exit(0);
