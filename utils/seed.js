@@ -13,7 +13,7 @@ connection.once('open', async () => {
 
     let thoughtCheck = await connection.db.listCollections({ name: 'thoughts' }).toArray();
     if (thoughtCheck.length) {
-      await connection.dropCollection('thoughts');
+        await connection.dropCollection('thoughts');
     }
 
     let userCheck = await connection.db.listCollections({ name: 'users' }).toArray();
@@ -29,8 +29,8 @@ connection.once('open', async () => {
             email: "isaac@isaac.com",
         },
         {
-            username: "falcon",
-            email: "falcon@falcon.com",
+            username: "user2",
+            email: "email@email.com",
         },
     ];
 
